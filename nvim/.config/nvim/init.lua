@@ -161,9 +161,9 @@ vim.wo.scrolloff = 10
 -- Color Column
 vim.o.colorcolumn = "80"
 
--- Cursor style
-vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:blinkwait800-blinkoff400-blinkon250'
+-- Cursor
 vim.o.cursorline = true
+vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:blinkwait800-blinkoff400-blinkon250'
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -188,6 +188,10 @@ vim.o.termguicolors = true
 -- Set tabstop
 vim.o.tabstop = 4
 vim.o.wrap = false
+
+-- Setup folding
+vim.o.foldmethod = "indent"
+vim.o.foldlevelstart = 99
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -242,6 +246,7 @@ require('neodev').setup()
 require('go').setup()
 require('dap-go').setup()
 vim.keymap.set('n', '<Leader>dt', require('dap-go').debug_test, { silent = true })
+
 local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.go",
@@ -322,7 +327,6 @@ vim.keymap.set('n', '<F8>', require('dap').step_out, { desc = 'Debug: Step Out',
 require("symbols-outline").setup({
   autofold_depth = 0
 })
-
 vim.keymap.set('n', '<F9>', ":SymbolsOutline<CR>", { desc = 'Symbols Toggle', silent = true })
 vim.keymap.set('n', '<Leader>b', require('dap').toggle_breakpoint, { desc = 'Debug: Set Breakpoint', silent = true })
 
@@ -360,19 +364,20 @@ require('Comment').setup()
 
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- See `:help indent_blankline.txt`
-require("ibl").setup()
+require('ibl').setup()
 
 -- Gitsigns
 -- See `:help gitsigns.txt`
-require('gitsigns').setup {
-  signs = {
-    add = { text = '+' },
-    change = { text = '~' },
-    delete = { text = '_' },
-    topdelete = { text = '‾' },
-    changedelete = { text = '~' },
-  },
-}
+-- require('gitsigns').setup {
+--   signs = {
+--     add = { text = '+' },
+--     change = { text = '~' },
+--     delete = { text = '_' },
+--     topdelete = { text = '‾' },
+--     changedelete = { text = '~' },
+--   },
+-- }
+require('telescope').load_extension('hg')
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -408,6 +413,9 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sk', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
 
+vim.keymap.set('n', '<leader>hf', require('telescope._extensions.hg_builtins').files, { desc = '[H]G [F]iles' })
+vim.keymap.set('n', '<leader>hs', require('telescope._extensions.hg_builtins').status, { desc = '[H]G [S]tatus' })
+
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
@@ -416,6 +424,7 @@ require('nvim-treesitter.configs').setup {
     'c',
     'cpp',
     'go',
+    'help',
     'lua',
     'python',
     'rust',
@@ -436,11 +445,6 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
--- Treesitter folding
-vim.opt.foldlevel = 20
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
@@ -458,7 +462,6 @@ local on_attach = function(_, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
-  -- vim.keymap.set('n', '<F2>', vim.lsp.buf.rename)
   nmap('<F2>', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
@@ -471,7 +474,6 @@ local on_attach = function(_, bufnr)
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<leader>k', vim.lsp.buf.hover, 'Hover Documentation')
   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Create a command `:Format` local to the LSP buffer
@@ -518,6 +520,9 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
+-- Turn on lsp status information
+-- require('fidget').setup()
+
 -- nvim-cmp setup
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
@@ -560,3 +565,4 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
