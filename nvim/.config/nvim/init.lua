@@ -424,7 +424,7 @@ require('nvim-treesitter.configs').setup {
     'c',
     'cpp',
     'go',
-    'help',
+    'vimdoc',
     'lua',
     'python',
     'rust',
