@@ -547,6 +547,7 @@ require("formatter").setup({
 	logging = true,
 	log_level = vim.log.levels.WARN,
 	filetype = {
+		c = { require("formatter.filetypes.c").clangformat },
 		go = { require("formatter.filetypes.go").goimports },
 		html = { require("formatter.filetypes.html").prettier },
 		javascript = { require("formatter.filetypes.javascript").prettier },
