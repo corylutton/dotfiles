@@ -74,7 +74,7 @@ require("packer").startup(function(use)
 	})
 
 	-- Debugging Adapters
-	use("mfussenegger/nvim-dap")
+	use({ "mfussenegger/nvim-dap", requires = { "nvim-neotest/nvim-nio" } })
 	use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
 
 	-- Snippets
@@ -87,7 +87,6 @@ require("packer").startup(function(use)
 	use("lukas-reineke/indent-blankline.nvim")
 	use({
 		"akinsho/bufferline.nvim",
-		tag = "v3.*",
 		requires = "nvim-tree/nvim-web-devicons",
 	})
 	use({
@@ -556,6 +555,7 @@ require("formatter").setup({
 		javascript = { require("formatter.filetypes.javascript").prettier },
 		lua = { require("formatter.filetypes.lua").stylua },
 		python = { require("formatter.filetypes.python").black },
+		rust = { require("formatter.filetypes.rust").rustfmt },
 		["*"] = {
 			require("formatter.filetypes.any").remove_trailing_whitespace,
 		},
