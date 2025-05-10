@@ -48,8 +48,6 @@ require("packer").startup(function(use)
 		after = "nvim-treesitter",
 	})
 
-	use("simrat39/symbols-outline.nvim")
-
 	-- VCS related plugins
 	use("mhinz/vim-signify")
 	use("jackysee/telescope-hg.nvim")
@@ -312,14 +310,6 @@ vim.keymap.set("n", "<F5>", require("dap").continue, { desc = "Debug: Resume", s
 vim.keymap.set("n", "<F6>", require("dap").step_over, { desc = "Debug: Step Over", silent = true })
 vim.keymap.set("n", "<F7>", require("dap").step_into, { desc = "Debug: Step Into", silent = true })
 vim.keymap.set("n", "<F8>", require("dap").step_out, { desc = "Debug: Step Out", silent = true })
-
--- Symbol Browser
--- ******************************************************************
-require("symbols-outline").setup({
-	autofold_depth = 0,
-})
-vim.keymap.set("n", "<F9>", ":SymbolsOutline<CR>", { desc = "Symbols Toggle", silent = true })
-vim.keymap.set("n", "<Leader>b", require("dap").toggle_breakpoint, { desc = "Debug: Set Breakpoint", silent = true })
 
 -- Setup our bufferline
 -- ******************************************************************
