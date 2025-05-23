@@ -91,6 +91,7 @@ require("packer").startup(function(use)
 		"linrongbin16/lsp-progress.nvim",
 		requires = { "nvim-tree/nvim-web-devicons" },
 	})
+	use("hedyhli/outline.nvim")
 
 	-- File Browser
 	use({
@@ -310,6 +311,10 @@ vim.keymap.set("n", "<F5>", require("dap").continue, { desc = "Debug: Resume", s
 vim.keymap.set("n", "<F6>", require("dap").step_over, { desc = "Debug: Step Over", silent = true })
 vim.keymap.set("n", "<F7>", require("dap").step_into, { desc = "Debug: Step Into", silent = true })
 vim.keymap.set("n", "<F8>", require("dap").step_out, { desc = "Debug: Step Out", silent = true })
+
+-- outline
+require("outline").setup({})
+vim.keymap.set("n", "<F9>", "<cmd>Outline<CR>", { desc = "Outline: Toggle", silent = true })
 
 -- Setup our bufferline
 -- ******************************************************************
