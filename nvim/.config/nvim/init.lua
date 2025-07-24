@@ -89,6 +89,21 @@ vim.keymap.set("n", "<C-Down>", "<C-w><C-j>", { desc = "Move focus to the lower 
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 vim.keymap.set("n", "<C-Up>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
+-- Run in terminal
+vim.keymap.set("n", "<F5>", function()
+	local runners = {
+		javascript = "node",
+		go = "go run",
+		python = "python3",
+	}
+	local cmd = runners[vim.bo.filetype]
+	if cmd then
+		vim.cmd("term " .. cmd .. " %")
+	elseif vim.bo.buftype == "terminal" then
+		vim.cmd("bd!")
+	end
+end, { desc = "Run in terminal/close terminal" })
+
 -- Install `lazy.nvim` plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -254,11 +269,11 @@ require("lazy").setup({
 			})
 
 			-- Diagnostic Config
-			vim.diagnostic.config {
+			vim.diagnostic.config({
 				severity_sort = true,
-				float = { border = 'rounded', source = 'if_many' },
+				float = { border = "rounded", source = "if_many" },
 				underline = { severity = vim.diagnostic.severity.ERROR },
-			}
+			})
 
 			-- LSP servers and clients are able to communicate to each other what features they support.
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -280,6 +295,7 @@ require("lazy").setup({
 				pyright = {},
 				rust_analyzer = {},
 				templ = {},
+				ts_ls = {},
 			}
 
 			-- Ensure the servers and tools above are installed
@@ -337,9 +353,9 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				go = { "gofmt", "goimports" },
-				html = { "prettier"},
-				css = { "prettier"},
-				javascript = { "prettier"},
+				html = { "prettier" },
+				css = { "prettier" },
+				javascript = { "prettier" },
 				lua = { "stylua" },
 				python = { "black" },
 				["*"] = { "trim_whitespace" },
