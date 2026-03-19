@@ -369,6 +369,9 @@ require("lazy").setup({
 		opts = {
 			fuzzy = { implementation = "rust" },
 			signature = { enabled = true },
+			keymap = {
+				preset = "super-tab",
+			},
 		},
 	},
 	{ -- Color Scheme
