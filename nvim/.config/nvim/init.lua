@@ -398,30 +398,33 @@ require("lazy").setup({
 	},
 	{ -- Treesitter
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
 		build = ":TSUpdate",
-		main = "nvim-treesitter.configs", -- Sets main module to use for opts
-		opts = {
-			ensure_installed = {
-				"c",
-				"cpp",
-				"go",
-				"html",
-				"javascript",
-				"lua",
-				"python",
-				"rust",
-				"vim",
-				"vimdoc",
-			},
-			highlight = {
-				enable = true,
-				additional_vim_regex_highlighting = false,
-			},
-			auto_install = true,
-			indent = {
-				enable = true,
-				disable = { "python" }, -- Python indentation is handled by LSP
-			},
-		},
+		config = function()
+			local configs = require("nvim-treesitter.config")
+			configs.setup({
+				ensure_installed = {
+					"c",
+					"cpp",
+					"go",
+					"html",
+					"javascript",
+					"lua",
+					"python",
+					"rust",
+					"vim",
+					"vimdoc",
+				},
+				highlight = {
+					enable = true,
+					additional_vim_regex_highlighting = false,
+				},
+				auto_install = true,
+				indent = {
+					enable = true,
+					disable = { "python" }, -- Python indentation is handled by LSP
+				},
+			})
+		end,
 	},
 })
